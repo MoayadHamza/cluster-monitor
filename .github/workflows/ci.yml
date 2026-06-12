@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Exporter unit tests
+        working-directory: exporter
+        run: |
+          pip install -r requirements.txt
+          pytest -q
+
+      - name: Validate Grafana dashboard JSON
+        run: python -c "import json; json.load(open('grafana/dashboards/cluster.json')); print('dashboard JSON ok')"
+
+      - name: Validate docker-compose config
+        run: docker compose -f docker-compose.yml config >/dev/null && echo "compose ok"
