@@ -56,7 +56,3 @@ cd exporter && pip install -r requirements.txt && pytest -q
 
 GitHub Actions (`.github/workflows/ci.yml`) runs the exporter tests, validates the
 Grafana dashboard JSON, and validates the compose file.
-
-## License
-
-MIT
